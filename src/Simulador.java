@@ -1,75 +1,31 @@
-import java.io.*;
-import java.util.Timer;
-import java.util.TimerTask;
+public class Simulador {
+    private CentralDeControle central;  // Instância da CentralDeControle que gerencia os elevadores e andares
+    private int tempoSimulado;  // Tempo de simulação em segundos
+    private UnidadeEnergia unidadeEnergia;  // Instância para registrar o consumo de energia durante a simulação
 
-public class Simulador implements Serializable {
-    private int minutoSimulado;
-    private int velocidadeEmMs;
-    private transient Timer timer;
-    private boolean emExecucao;
-    private Predio predio;
-
-    public Simulador(int andares, int elevadores, int velocidadeEmMs) {
-        this.minutoSimulado = 0;
-        this.velocidadeEmMs = velocidadeEmMs;
-        this.predio = new Predio(andares, elevadores);
+    // Construtor que inicializa o simulador com a quantidade de elevadores, andares e o tempo de simulação
+    public Simulador(int quantidadeElevadores, int quantidadeAndares, int tempoSimulado) {
+        this.unidadeEnergia = new UnidadeEnergia();  // Cria a instância da UnidadeEnergia
+        this.central = new CentralDeControle(quantidadeElevadores, quantidadeAndares, unidadeEnergia);  // Inicializa a central de controle com os parâmetros fornecidos
+        this.tempoSimulado = tempoSimulado;  // Atribui o tempo de simulação
     }
 
+    // Método que inicia o simulador
     public void iniciar() {
-        if (emExecucao) return;
-        emExecucao = true;
-        iniciarTimer();
-        System.out.println("Simulação iniciada.");
-    }
-
-    public void pausar() {
-        if (timer != null) {
-            timer.cancel();
-            emExecucao = false;
-            System.out.println("Simulação pausada.");
-        }
-    }
-
-    public void continuar() {
-        if (!emExecucao) {
-            iniciarTimer();
-            emExecucao = true;
-            System.out.println("Simulação retomada.");
-        }
-    }
-
-    public void encerrar() {
-        if (timer != null) timer.cancel();
-        emExecucao = false;
-        System.out.println("Simulação encerrada.");
-    }
-
-    private void iniciarTimer() {
-        timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            public void run() {
-                predio.atualizar(minutoSimulado++);
+        // Loop para simular o tempo, a cada iteração é um segundo
+        for (int i = 0; i < tempoSimulado; i++) {
+            central.atualizar(i + 1);  // Atualiza a central de controle no segundo atual
+            try {
+                Thread.sleep(1000);  // Pausa de 1 segundo entre os ciclos de simulação
+            } catch (InterruptedException e) {
+                e.printStackTrace();  // Trata possíveis exceções de interrupção
             }
-        }, 0, velocidadeEmMs);
-    }
-
-    public void gravar(String nomeArquivo) {
-        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(nomeArquivo))) {
-            out.writeObject(this);
-            System.out.println("Simulação gravada em: " + nomeArquivo);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-    }
 
-    public static Simulador carregar(String nomeArquivo) {
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(nomeArquivo))) {
-            Simulador sim = (Simulador) in.readObject();
-            sim.continuar();
-            return sim;
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        }
+        // Após a simulação, exibe os resultados do consumo de energia
+        System.out.println("Simulação concluída.");
+        System.out.println("Energia total consumida: " + unidadeEnergia.getTotalEnergia() + " unidades.");
+        System.out.println("Tempo total de operação: " + unidadeEnergia.getTempoTotal() + " segundos.");
+        System.out.println("Consumo médio por segundo: " + unidadeEnergia.calcularConsumoPorTempo() + " unidades/segundo.");
     }
 }
