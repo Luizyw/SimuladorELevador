@@ -1,31 +1,34 @@
+// Classe que representa uma pessoa no prédio
 public class Pessoa {
-    // Atributos da classe Pessoa
-    private int idade;        // Armazena a idade da pessoa
-    private boolean cadeirante; // Indica se a pessoa é cadeirante ou não
+    private int idade;          // Idade da pessoa
+    private boolean cadeirante; // Indica se a pessoa é cadeirante
+    private int andarDestino;   // Andar para o qual a pessoa deseja ir
 
-    // Construtor da classe Pessoa que recebe idade e o status de cadeirante
-    public Pessoa(int idade, boolean cadeirante) {
-        this.idade = idade;           // Inicializa o atributo idade com o valor passado
-        this.cadeirante = cadeirante; // Inicializa o atributo cadeirante com o valor passado
+    // Construtor que inicializa idade, cadeirante e andar destino
+    public Pessoa(int idade, boolean cadeirante, int andarDestino) {
+        this.idade = idade;
+        this.cadeirante = cadeirante;
+        this.andarDestino = andarDestino;
     }
 
-    // Método getter para obter a idade da pessoa
+    // Retorna a idade da pessoa
     public int getIdade() {
-        return idade;  // Retorna a idade da pessoa
+        return idade;
     }
 
-    // Método getter para verificar se a pessoa é cadeirante
+    // Retorna se a pessoa é cadeirante
     public boolean isCadeirante() {
-        return cadeirante;  // Retorna o status de cadeirante (verdadeiro ou falso)
+        return cadeirante;
     }
 
-    // Sobrescrita do método toString para exibir informações da pessoa de forma legível
-    @Override
-    public String toString() {
-        // Retorna uma string com as informações de idade e se é cadeirante ou não
-        return "Pessoa{" +
-                "idade=" + idade +
-                ", cadeirante=" + cadeirante +
-                '}';
+    // Retorna o andar destino da pessoa
+    public int getAndarDestino() {
+        return andarDestino;
+    }
+
+    // Método que indica se a pessoa tem prioridade
+    // Pessoas com 60 anos ou mais ou cadeirantes têm prioridade
+    public boolean temPrioridade() {
+        return (idade >= 60) || cadeirante;
     }
 }

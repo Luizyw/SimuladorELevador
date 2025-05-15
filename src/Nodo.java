@@ -1,25 +1,27 @@
+// Classe que representa um nodo da lista encadeada.
+// Cada nodo armazena um objeto genérico e referência para o próximo nodo.
 public class Nodo {
-    private Object objeto;  // Atributo para armazenar o objeto contido no nodo
-    private Nodo proximo;   // Referência para o próximo nodo na lista
+    private Object objeto;   // Objeto armazenado no nodo
+    private Nodo proximo;    // Referência para o próximo nodo na lista
 
-    // Construtor para inicializar o nodo com um objeto
+    // Construtor que inicializa o nodo com o objeto fornecido
     public Nodo(Object objeto) {
-        this.objeto = objeto;  // Atribui o objeto ao atributo 'objeto'
-        this.proximo = null;   // Inicializa o 'proximo' como nulo, pois não há próximo nodo no momento
+        this.objeto = objeto;     // Atribui o objeto ao nodo
+        this.proximo = null;      // Inicializa o próximo nodo como nulo
     }
 
     // Método para obter o objeto armazenado no nodo
     public Object getObjeto() {
-        return objeto;  // Retorna o objeto contido no nodo
+        return objeto;
+    }
+
+    // Método para obter o próximo nodo da lista
+    public Nodo getProximo() {
+        return proximo;
     }
 
     // Método para definir o próximo nodo da lista
     public void setProximo(Nodo proximo) {
-        this.proximo = proximo;  // Atribui o próximo nodo à referência 'proximo'
-    }
-
-    // Método para obter o próximo nodo
-    public Nodo getProximo() {
-        return proximo;  // Retorna o próximo nodo referenciado
+        this.proximo = proximo;
     }
 }

@@ -1,29 +1,35 @@
 public class Simulador {
-    private CentralDeControle central;  // Instância da CentralDeControle que gerencia os elevadores e andares
-    private int tempoSimulado;  // Tempo de simulação em segundos
-    private UnidadeEnergia unidadeEnergia;  // Instância para registrar o consumo de energia durante a simulação
+    private CentralDeControle central;      // Controla os elevadores e andares
+    private int tempoSimulado;              // Duração da simulação em segundos
+    private UnidadeEnergia unidadeEnergia;  // Mede consumo de energia
 
-    // Construtor que inicializa o simulador com a quantidade de elevadores, andares e o tempo de simulação
+    // Construtor para inicializar o simulador
     public Simulador(int quantidadeElevadores, int quantidadeAndares, int tempoSimulado) {
-        this.unidadeEnergia = new UnidadeEnergia();  // Cria a instância da UnidadeEnergia
-        this.central = new CentralDeControle(quantidadeElevadores, quantidadeAndares, unidadeEnergia);  // Inicializa a central de controle com os parâmetros fornecidos
-        this.tempoSimulado = tempoSimulado;  // Atribui o tempo de simulação
+        this.unidadeEnergia = new UnidadeEnergia();
+        this.central = new CentralDeControle(quantidadeElevadores, quantidadeAndares, unidadeEnergia);
+        this.tempoSimulado = tempoSimulado;
     }
 
-    // Método que inicia o simulador
+    // Método que inicia e executa a simulação
     public void iniciar() {
-        // Loop para simular o tempo, a cada iteração é um segundo
-        for (int i = 0; i < tempoSimulado; i++) {
-            central.atualizar(i + 1);  // Atualiza a central de controle no segundo atual
+        for (int segundo = 1; segundo <= tempoSimulado; segundo++) {
+            System.out.println("\n--- Ciclo de simulação: segundo " + segundo + " ---");
+
+            // Atualiza a lógica da central de controle (movimentação, chamadas, etc)
+            central.atualizar(segundo);
+
+            // Aqui você pode incluir a geração de pessoas, entrada/saída nos elevadores e prints
+
+            // Pausa de 1 segundo para simular tempo real (pode ser removida para acelerar testes)
             try {
-                Thread.sleep(1000);  // Pausa de 1 segundo entre os ciclos de simulação
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
-                e.printStackTrace();  // Trata possíveis exceções de interrupção
+                e.printStackTrace();
             }
         }
 
-        // Após a simulação, exibe os resultados do consumo de energia
-        System.out.println("Simulação concluída.");
+        // Após a simulação, imprime o consumo de energia e tempo total
+        System.out.println("\nSimulação concluída.");
         System.out.println("Energia total consumida: " + unidadeEnergia.getTotalEnergia() + " unidades.");
         System.out.println("Tempo total de operação: " + unidadeEnergia.getTempoTotal() + " segundos.");
         System.out.println("Consumo médio por segundo: " + unidadeEnergia.calcularConsumoPorTempo() + " unidades/segundo.");
