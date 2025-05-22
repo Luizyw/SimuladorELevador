@@ -185,4 +185,8 @@ public class SistemaElevadores {
         System.out.println("Energia consumida total: " + totalEnergia);
         System.out.println(String.format("Consumo médio por ciclo: %.2f", tempo > 0 ? ((double) totalEnergia / tempo) : 0.0));
     }
+
+    public void imprimirFila() {
+
+    }
 }
