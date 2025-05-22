@@ -1,19 +1,25 @@
-// Classe principal que inicia a execução do programa
 public class Main {
     public static void main(String[] args) {
-        // Define o número de elevadores no sistema
-        int quantidadeElevadores = 2;
+        SistemaElevadores sistema = new SistemaElevadores(2, 10, 800);
 
-        // Define o número de andares do prédio (0 a 9, total 10 andares)
-        int quantidadeAndares = 10;
+        // Adicionar passageiros de exemplo (id, idade, cadeirante, peso, andar origem, andar destino)
+        sistema.adicionarPassageiroNaFila(new Passageiro(1, 70, false, 70, 0, 5)); // idoso
+        sistema.adicionarPassageiroNaFila(new Passageiro(2, 30, true, 80, 0, 7));  // cadeirante
+        sistema.adicionarPassageiroNaFila(new Passageiro(3, 40, false, 90, 3, 8)); // normal
+        sistema.adicionarPassageiroNaFila(new Passageiro(4, 65, false, 75, 2, 9)); // idoso
+        sistema.adicionarPassageiroNaFila(new Passageiro(5, 25, false, 60, 0, 10));// normal
+        sistema.adicionarPassageiroNaFila(new Passageiro(6, 55, false, 85, 1, 4)); // normal
+        sistema.adicionarPassageiroNaFila(new Passageiro(7, 80, false, 65, 0, 6)); // idoso
+        sistema.adicionarPassageiroNaFila(new Passageiro(8, 35, true, 90, 4, 0));  // cadeirante
 
-        // Define o tempo total da simulação em segundos (ou ciclos)
-        int tempoSimulado = 20;
+        System.out.println("Estado inicial da fila:");
+        sistema.imprimirFila();
 
-        // Cria uma instância do simulador com os parâmetros definidos
-        Simulador simulador = new Simulador(quantidadeElevadores, quantidadeAndares, tempoSimulado);
+        // Loop até simulação terminar
+        while (!sistema.simFinalizada()) {
+            sistema.operarUmCiclo();
+        }
 
-        // Inicia a simulação - método que deve conter toda a lógica do simulador
-        simulador.iniciar();
+        sistema.imprimirResumo();
     }
 }
