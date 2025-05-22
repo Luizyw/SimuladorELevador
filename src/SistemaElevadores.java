@@ -9,6 +9,7 @@ public class SistemaElevadores {
     private int totalEnergiaConsumida;
     private int totalAndaresPercorridos;
 
+    // Inicializa o sistema com os elevadores e a fila de espera
     public SistemaElevadores(int numElevadores, int capacidadePassageirosElevador, int capacidadePesoElevador) {
         this.numElevadores = numElevadores;
         this.elevadores = new Elevador[numElevadores];
@@ -22,6 +23,7 @@ public class SistemaElevadores {
         this.totalAndaresPercorridos = 0;
     }
 
+    // Adiciona passageiro na fila de espera
     public void adicionarPassageiroNaFila(Passageiro p) {
         if (qtdFila < MAX_PASSAGEIROS_FILAS) {
             filaEspera[qtdFila] = p;
@@ -31,6 +33,7 @@ public class SistemaElevadores {
         }
     }
 
+    // Busca passageiro prioritário mais próximo do elevador
     private int buscarPassageiroPrioritario(int andarElevador) {
         int idxPrioritario = -1;
         int menorDistancia = 1000;
@@ -47,6 +50,7 @@ public class SistemaElevadores {
         return idxPrioritario;
     }
 
+    // Busca passageiro normal mais próximo do elevador
     private int buscarPassageiroNormal(int andarElevador) {
         int idxNormal = -1;
         int menorDistancia = 1000;
@@ -63,6 +67,7 @@ public class SistemaElevadores {
         return idxNormal;
     }
 
+    // Remove passageiro da fila de espera
     private void removerDaFila(int idx) {
         for (int i = idx; i < qtdFila - 1; i++) {
             filaEspera[i] = filaEspera[i + 1];
@@ -71,6 +76,7 @@ public class SistemaElevadores {
         qtdFila--;
     }
 
+    // Executa um ciclo da simulação
     public void operarUmCiclo() {
         tempo++;
         System.out.println("\n--- Ciclo " + tempo + " ---");
@@ -82,6 +88,7 @@ public class SistemaElevadores {
                 System.out.println("Elevador " + e.getId() + ": passageiros desembarcaram no andar " + e.getAndarAtual());
             }
 
+            // Embarque prioritário
             while (true) {
                 int idxPrioritario = buscarPassageiroPrioritario(e.getAndarAtual());
                 if (idxPrioritario == -1) break;
@@ -99,9 +106,10 @@ public class SistemaElevadores {
                 }
             }
 
+            // Embarque normal
             while (true) {
                 int idxNormal = buscarPassageiroNormal(e.getAndarAtual());
-                if (idxNormal == -1) break;
+                if (idxNormal == -1) break;    //Isso aqui faz procurar uma pessao sem prioridade
                 Passageiro p = filaEspera[idxNormal];
                 if (p.getAndarOrigem() == e.getAndarAtual()) {
                     if (e.podeEmbarcar(p)) {
@@ -116,8 +124,9 @@ public class SistemaElevadores {
                 }
             }
 
+            // Define próximo andar a ir
             int proxAndar = -1;
-            int menorDistancia = 1000;
+            int menorDistancia = 1000;    //Recebe um valor alto logo de começo para poder ver a menor distância possivel
 
             for (int j = 0; j < e.getQtdPassageiros(); j++) {
                 Passageiro p = e.getPassageiros()[j];
@@ -128,6 +137,7 @@ public class SistemaElevadores {
                 }
             }
 
+            // Se não há passageiros embarcados, busca na fila
             if (proxAndar == -1) {
                 int idxPri = buscarPassageiroPrioritario(e.getAndarAtual());
                 if (idxPri != -1) {
@@ -140,6 +150,7 @@ public class SistemaElevadores {
                 }
             }
 
+            // Move elevador se necessário
             if (proxAndar != -1 && proxAndar != e.getAndarAtual()) {
                 e.moverParaAndar(proxAndar);
                 System.out.println("Elevador " + e.getId() + " moveu para andar " + proxAndar);
@@ -151,6 +162,7 @@ public class SistemaElevadores {
         }
     }
 
+    // Verifica se a simulação terminou
     public boolean simFinalizada() {
         if (qtdFila > 0) return false;
         for (int i = 0; i < numElevadores; i++) {
@@ -159,6 +171,7 @@ public class SistemaElevadores {
         return true;
     }
 
+    // Imprime resumo final da simulação
     public void imprimirResumo() {
         int totalAndares = 0;
         int totalEnergia = 0;

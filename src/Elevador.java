@@ -47,10 +47,12 @@ public class Elevador {
         return qtdPassageiros;
     }
 
+    // Verifica se o passageiro pode embarcar considerando peso e capacidade
     public boolean podeEmbarcar(Passageiro p) {
         return (pesoAtual + p.getPeso() <= capacidadePesoMax) && (qtdPassageiros < passageiros.length);
     }
 
+    // Embarca o passageiro no elevador se possível
     public boolean embarcar(Passageiro p) {
         if (!podeEmbarcar(p)) {
             return false;
@@ -62,6 +64,7 @@ public class Elevador {
         return true;
     }
 
+    // Desembarca passageiros cujo destino é o andar atual
     public boolean desembarcarPassageirosNoAndar() {
         boolean algumDesembarcou = false;
         int i = 0;
@@ -69,6 +72,7 @@ public class Elevador {
             if (passageiros[i].getAndarDestino() == andarAtual) {
                 pesoAtual -= passageiros[i].getPeso();
                 passageiros[i].setEmbarcado(false);
+                // Remove passageiro e desloca os demais para a esquerda
                 for (int j = i; j < qtdPassageiros - 1; j++) {
                     passageiros[j] = passageiros[j + 1];
                 }
@@ -82,6 +86,7 @@ public class Elevador {
         return algumDesembarcou;
     }
 
+    // Move o elevador para o andar de destino, atualizando andares percorridos e energia consumida
     public void moverParaAndar(int destino) {
         int distancia = Math.abs(destino - andarAtual);
         if (distancia > 0) {
@@ -91,12 +96,13 @@ public class Elevador {
         }
     }
 
+    // Representa passageiros embarcados em string resumida
     public String passageirosToString() {
         if (qtdPassageiros == 0) return "Nenhum passageiro";
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < qtdPassageiros; i++) {
             Passageiro p = passageiros[i];
-            sb.append(String.format("P%d(id:%d,peso:%dkg,pri:%b) ", i+1, p.getId(), p.getPeso(), p.isPrioridade()));
+            sb.append(String.format("P%d(id:%d,peso:%dkg,pri:%b) ", i + 1, p.getId(), p.getPeso(), p.isPrioridade()));
         }
         return sb.toString();
     }

@@ -19,41 +19,16 @@ public class Passageiro {
         this.embarcado = false;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public int getIdade() {
-        return idade;
-    }
-
-    public boolean isCadeirante() {
-        return cadeirante;
-    }
-
-    public int getPeso() {
-        return peso;
-    }
-
-    public int getAndarOrigem() {
-        return andarOrigem;
-    }
-
-    public int getAndarDestino() {
-        return andarDestino;
-    }
-
-    public boolean isPrioridade() {
-        return prioridade;
-    }
-
-    public boolean isEmbarcado() {
-        return embarcado;
-    }
-
-    public void setEmbarcado(boolean embarcado) {
-        this.embarcado = embarcado;
-    }
+    // Getters e setters básicos
+    public int getId() { return id; }
+    public int getIdade() { return idade; }
+    public boolean isCadeirante() { return cadeirante; }
+    public int getPeso() { return peso; }
+    public int getAndarOrigem() { return andarOrigem; }
+    public int getAndarDestino() { return andarDestino; }
+    public boolean isPrioridade() { return prioridade; }
+    public boolean isEmbarcado() { return embarcado; }
+    public void setEmbarcado(boolean embarcado) { this.embarcado = embarcado; }
 
     @Override
     public String toString() {
